@@ -60,11 +60,11 @@ impl Running for XunleiInstall {
         println!("Config directory: {}", self.0.config_path.display());
         println!("Download directory: {}", self.0.download_path.display());
 
-        //  /var/packages/pan-xunlei-com
+        //  /opt/thunder/pan-xunlei-com
         let base_dir = Path::new(constant::SYNOPKG_PKGBASE);
-        // /var/packages/pan-xunlei-com/target
+        // /opt/thunder/pan-xunlei-com/target
         let target_dir = PathBuf::from(constant::SYNOPKG_PKGDEST);
-        // /var/packages/pan-xunlei-com/target/host
+        // /opt/thunder/pan-xunlei-com/target/host
         let host_dir = PathBuf::from(constant::SYNOPKG_HOST);
         // If Synology NAS is not installed, the backend service will not be started
         let var_path = Path::new(constant::SYNOPKG_VAR);
@@ -75,7 +75,7 @@ impl Running for XunleiInstall {
 
         util::create_dir_all(&target_dir, 0o755)?;
 
-        // path: /var/packages/pan-xunlei-com/target/var
+        // path: /opt/thunder/pan-xunlei-com/target/var
         if !var_path.exists() {
             util::create_dir_all(var_path, 0o777)?;
             util::chown(var_path, uid, gid)?;
@@ -96,7 +96,7 @@ impl Running for XunleiInstall {
             ))?;
         }
 
-        // path: /var/packages/pan-xunlei-com/target/host/etc/synoinfo.conf
+        // path: /opt/thunder/pan-xunlei-com/target/host/etc/synoinfo.conf
         let synoinfo_path = PathBuf::from(format!(
             "{}{}",
             host_dir.display(),
@@ -128,7 +128,7 @@ impl Running for XunleiInstall {
             0o644,
         )?;
 
-        // path: /var/packages/pan-xunlei-com/target/host/usr/syno/synoman/webman/modules/authenticate.cgi
+        // path: /opt/thunder/pan-xunlei-com/target/host/usr/syno/synoman/webman/modules/authenticate.cgi
         let syno_authenticate_path = PathBuf::from(format!(
             "{}{}",
             host_dir.display(),
@@ -184,7 +184,7 @@ pub struct XunleiUninstall(pub Option<InstallConfig>);
 
 impl Running for XunleiUninstall {
     fn run(self) -> Result<()> {
-        // path: /var/packages/pan-xunlei-com
+        // path: /opt/thunder/pan-xunlei-com
         let path = Path::new(constant::SYNOPKG_PKGBASE);
         if path.exists() {
             std::fs::remove_dir_all(path)?;
